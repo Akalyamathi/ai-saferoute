@@ -1,0 +1,36 @@
+ <!DOCTYPE html>
+<html>
+<head>
+    <title>AI SafeRoute</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<h2>AI SafeRoute</h2>
+
+ <div class="controls">
+    <input id="origin" placeholder="Origin (place name)">
+    <input id="destination" placeholder="Destination (place name)">
+
+    <button onclick="getRoute('shortest')">Shortest</button>
+    <button onclick="getRoute('balanced')">Balanced</button>
+    <button onclick="getRoute('safest')">Safest</button>
+
+    <button onclick="triggerSOS()">🚨 SOS</button>
+</div>
+
+
+<div id="map"></div>
+
+<div id="info"></div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="/static/script.js"></script>
+
+</body>
+</html>

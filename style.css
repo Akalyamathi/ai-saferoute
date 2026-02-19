@@ -1,0 +1,30 @@
+body {
+    font-family: Arial;
+    text-align: center;
+}
+
+#map {
+    height: 400px;
+    margin: 20px;
+}
+
+.controls {
+    margin: 10px;
+}
+
+input {
+    padding: 8px;
+    margin: 5px;
+    width: 220px;
+}
+
+button {
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+#info {
+    margin-top: 15px;
+    font-weight: bold;
+}

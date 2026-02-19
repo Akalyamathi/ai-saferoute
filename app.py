@@ -162,14 +162,13 @@ def build_graph(hour, alpha, dataset_ts):
     return G
 
 # ---------------- NEAREST NODE ----------------
-def nearest_node(G, point):
+ def nearest_node(G, point):
     closest = min(G.nodes, key=lambda n: math.dist(n, point))
 
     if math.dist(closest, point) > MAX_SNAP_DISTANCE:
         logger.warning("Snapping far point for demo")
+
     return closest
-
-
 
 # ---------------- ROUTING ----------------
 def compute_route(origin, destination, hour, alpha):
@@ -194,22 +193,27 @@ def compute_route(origin, destination, hour, alpha):
             heuristic=lambda a, b: math.dist(a, b),
             weight="weight",
         )
+
     except nx.NetworkXNoPath:
         return None, "No route available"
+
     except Exception:
         traceback.print_exc()
         return None, "Routing failure"
-    if len(path) == 1:
-     return {
-        "path": path,
-        "eta": 0,
-        "risk": 0,
-        "confidence": 1,
-        "warning": "Origin and destination are extremely close"
-    }, None
 
+    # ✅ Extremely close / trivial route
+    if len(path) <= 1:
+        return {
+            "path": path,
+            "eta": 0,
+            "risk": 0,
+            "confidence": 1,
+            "warning": "Origin and destination are extremely close"
+        }, None
 
-    eta, risk, geometry = 0, 0, []
+    eta = 0
+    risk = 0
+    geometry = []
 
     for i in range(len(path) - 1):
         edge = G[path[i]][path[i + 1]]
@@ -217,11 +221,15 @@ def compute_route(origin, destination, hour, alpha):
         risk += edge["risk"]
         geometry.append(edge["geometry"])
 
-    segments_count = max(len(path) - 1, 1)
+    segments_count = len(path) - 1
 
-    normalized_risk = round(risk / segments_count, 2)
+    # ✅ Avoid division issues
+    if segments_count == 0:
+        normalized_risk = 0
+    else:
+        normalized_risk = round(risk / segments_count, 2)
+
     confidence = round(1 / (1 + normalized_risk), 2)
-
 
     return {
         "path": path,
@@ -230,6 +238,7 @@ def compute_route(origin, destination, hour, alpha):
         "confidence": confidence,
         "geometry": geometry,
     }, None
+
 
 # ---------------- RATE LIMIT ----------------
 REQUESTS = {}
@@ -289,7 +298,7 @@ def get_routes():
     if not valid_coords(destination):
         return error(400, "Invalid destination")
 
-    if origin == destination:
+    if math.dist(origin, destination) < 0.0003:
         return error(400, "Origin and destination cannot match")
 
     if not valid_hour(hour):
@@ -319,5 +328,6 @@ def get_routes():
 # ---------------- RUN ----------------
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
+
 
 

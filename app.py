@@ -18,7 +18,7 @@ logger = logging.getLogger("AI_SafeRoute")
 # ---------------- CONFIG ----------------
 DEFAULT_SPEED_KMPH = 30
 GRAPH_CACHE_TTL = 300
-MAX_SNAP_DISTANCE = 0.05  # approx ~20–30m demo tolerance
+MAX_SNAP_DISTANCE = 0.02  # approx ~20–30m demo tolerance
 
 VALID_ROUTE_TYPES = {"shortest", "safest", "balanced"}
 
@@ -320,3 +320,4 @@ def get_routes():
 # ---------------- RUN ----------------
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
+

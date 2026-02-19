@@ -167,7 +167,6 @@ def nearest_node(G, point):
 
     if math.dist(closest, point) > MAX_SNAP_DISTANCE:
         logger.warning("Snapping far point for demo")
-
     return closest
 
 
@@ -200,7 +199,7 @@ def compute_route(origin, destination, hour, alpha):
     except Exception:
         traceback.print_exc()
         return None, "Routing failure"
-    if len(path) <= 1:
+    if len(path) == 1:
      return {
         "path": path,
         "eta": 0,
@@ -320,4 +319,5 @@ def get_routes():
 # ---------------- RUN ----------------
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
+
 

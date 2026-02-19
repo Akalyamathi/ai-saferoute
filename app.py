@@ -162,7 +162,7 @@ def build_graph(hour, alpha, dataset_ts):
     return G
 
 # ---------------- NEAREST NODE ----------------
- def nearest_node(G, point):
+def nearest_node(G, point):
     closest = min(G.nodes, key=lambda n: math.dist(n, point))
 
     if math.dist(closest, point) > MAX_SNAP_DISTANCE:
@@ -328,6 +328,7 @@ def get_routes():
 # ---------------- RUN ----------------
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
+
 
 
 
